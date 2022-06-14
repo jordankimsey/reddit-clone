@@ -1,0 +1,31 @@
+
+type Post
+  @model
+  @auth(
+    rules: [
+      #Owner can perform any action on their own post
+      { allow: owner, operations: [create, update, delete, read] }
+      #Other signed in users can read everyones posts
+      { allow: private, operations: [read] }
+      #Non-signed in users(guest) can read everyones posts as well
+      { allow: public, operations: [read] }
+    ]) 
+{
+  id: ID!
+  title: String!
+  comments: [Comment] @hasMany
+}
+
+type Comment
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, update, delete, read] }
+      { allow: private, operations: [read] }
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  post: Post @belongsTo
+  content: String!
+}
