@@ -6,10 +6,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
-import {AuthContext} from '../src/context/AuthContext';
+import { AuthContext } from '../src/context/AuthContext';
+import Header from '../src/components/Header';
 
 //Amplify Setup
-import {Amplify, Auth, withSSRContext } from 'aws-amplify';
+import {Amplify} from 'aws-amplify';
 import awsExports from '../src/aws-exports';
 
 Amplify.configure({ ...awsExports, ssr: true });
@@ -29,7 +30,8 @@ export default function MyApp(props) {
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
-          <Component {...pageProps} />
+          <Header />
+            <Component {...pageProps} />
         </ThemeProvider>
       </AuthContext>
     </CacheProvider>

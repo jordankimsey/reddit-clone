@@ -18,13 +18,14 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = async ({ username, password }) => {
-    const amplifyUser = await Auth.signIn(username, password);
-    if (amplifyUser) {
+    try {
+      const amplifyUser = await Auth.signIn(username, password);
       setUser(amplifyUser);
       router.push('/');
-    } else {
-      return setOpen(true)
-      throw new Error('Something went wrong');
+    } catch (err) {
+      setSignInError(err.message)
+      setOpen(true);
+      
     }
   };
 
@@ -36,6 +37,7 @@ const Login = () => {
   };
 
   return (
+    <>
     <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
       <Grid
         container
@@ -95,12 +97,14 @@ const Login = () => {
           </Button>
         </Grid>
       </Grid>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+     
+    </form>
+     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity='error' sx={{ width: '100%' }}>
           {signInError}
         </Alert>
       </Snackbar>
-    </form>
+    </>
   );
 };
 
